@@ -1,0 +1,24 @@
+language: C
+
+os:
+  - linux
+
+cache:
+  - apt
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    packages:
+      - cpanminus
+
+install:
+  - sudo cpanm -v --notest Test::Nginx
+
+script: make test
+
+after_failure:
+  - cat t/servroot/logs/error.log
