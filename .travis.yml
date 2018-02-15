@@ -19,7 +19,7 @@ addons:
 install:
   - sudo cpanm -v --notest Test::Nginx
 
-script: make test
+script: make && make test
 
 after_failure:
   - cat t/servroot/logs/error.log
