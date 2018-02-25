@@ -1,4 +1,5 @@
-TMP_DIR := /tmp/nginx
+TMP_DIR       := /tmp/nginx
+MOD_DIR       := $(shell pwd)
 
 NGINX_VERSION := 1.10.3
 
@@ -31,7 +32,7 @@ nginx_download:
 	tar -C $(TMP_DIR) -xzf "nginx-$(NGINX_VERSION).tar.gz"  --strip-components=1
 
 configure:
-	cd $(TMP_DIR) && ./configure --with-cc-opt='-g -O2' $(NGINX_OPTIONS)
+	cd $(TMP_DIR) && ./configure --with-cc-opt='-g -O2' $(NGINX_OPTIONS) --add-dynamic-module=$(MOD_DIR)
 
 build:
 	make -C $(TMP_DIR)
