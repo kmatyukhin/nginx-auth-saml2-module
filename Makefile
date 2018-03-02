@@ -16,6 +16,7 @@ NGINX_OPTIONS += "--without-http_rewrite_module"
 NGINX_OPTIONS += "--without-http_gzip_module"
 NGINX_OPTIONS += "--without-http_uwsgi_module"
 NGINX_OPTIONS += "--without-http_scgi_module"
+NGINX_OPTIONS += "--add-dynamic-module=$(MOD_DIR)"
 
 CFLAGS := "-Wall -Wextra -Werror"
 
@@ -32,7 +33,8 @@ nginx_download:
 	tar -C $(TMP_DIR) -xzf "nginx-$(NGINX_VERSION).tar.gz"  --strip-components=1
 
 configure:
-	cd $(TMP_DIR) && ./configure --with-cc-opt='-g -O2' $(NGINX_OPTIONS) --add-dynamic-module=$(MOD_DIR)
+	cd $(TMP_DIR) && ./configure --with-cc-opt="-g -O0 --coverage" \
+        --with-ld-opt="-lgcov" $(NGINX_OPTIONS)
 
 build:
 	make -C $(TMP_DIR)
@@ -41,6 +43,12 @@ install:
 	make -C $(TMP_DIR) install
 
 test: $(TMP_DIR)/sbin/nginx
+	@lcov -q --directory $(TMP_DIR)/objs/addon/nginx-auth-saml2-module --zerocounters
 	@if [ ! $(TEST) ] ; then TEST="*.t" ; fi
 	@PATH="$(TMP_DIR)/sbin":$(PATH) \
 	prove -r "t/$(TEST)"
+
+coverage:
+	lcov --directory $(TMP_DIR)/objs/addon/nginx-auth-saml2-module \
+     --capture --output-file coverage.info --base-directory $(TMP_DIR)
+	genhtml -s -o $(TMP_DIR)/coverage coverage.info
