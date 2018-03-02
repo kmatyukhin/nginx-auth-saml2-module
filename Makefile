@@ -36,10 +36,10 @@ nginx_download:
 
 configure:
 ifeq ($(COVERAGE),1)
-	cd $(TMP_DIR) && ./configure --with-cc-opt="-g -O0 --coverage" \
+	cd $(TMP_DIR) && ./configure --with-cc-opt="-O0 --coverage" \
         --with-ld-opt="-lgcov" $(NGINX_OPTIONS)
 else
-	cd $(TMP_DIR) && ./configure --with-cc-opt="-g -O3" $(NGINX_OPTIONS)
+	cd $(TMP_DIR) && ./configure --with-cc-opt="-O3" $(NGINX_OPTIONS)
 endif
 
 build:
