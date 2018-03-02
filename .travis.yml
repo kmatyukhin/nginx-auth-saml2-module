@@ -30,4 +30,4 @@ after_failure:
   - cat t/servroot/logs/error.log
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -s /tmp/nginx/objs/addon/nginx-auth-saml2-module
+  - bash <(curl -s https://codecov.io/bash) -R /tmp/nginx/objs/addon/nginx-auth-saml2-module
