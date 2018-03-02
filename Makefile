@@ -3,6 +3,8 @@ MOD_DIR       := $(shell pwd)
 
 NGINX_VERSION := 1.10.3
 
+COVERAGE      ?= 1
+
 NGINX_OPTIONS  = "--prefix=$(TMP_DIR)"
 NGINX_OPTIONS += "--conf-path=$(TMP_DIR)/nginx.conf"
 NGINX_OPTIONS += "--with-select_module"
@@ -33,8 +35,12 @@ nginx_download:
 	tar -C $(TMP_DIR) -xzf "nginx-$(NGINX_VERSION).tar.gz"  --strip-components=1
 
 configure:
+ifeq ($(COVERAGE),1)
 	cd $(TMP_DIR) && ./configure --with-cc-opt="-g -O0 --coverage" \
         --with-ld-opt="-lgcov" $(NGINX_OPTIONS)
+else
+	cd $(TMP_DIR) && ./configure --with-cc-opt="-g -O3" $(NGINX_OPTIONS)
+endif
 
 build:
 	make -C $(TMP_DIR)

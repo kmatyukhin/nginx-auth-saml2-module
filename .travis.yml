@@ -6,6 +6,10 @@ os:
 cache:
   - apt
 
+env:
+  global:
+    - COVERAGE=1
+
 compiler:
   - clang
   - gcc
@@ -13,10 +17,11 @@ compiler:
 addons:
   apt:
     packages:
-      - nginx
+      - lcov
       - cpanminus
 
 install:
+  - if [ "$CC" == "clang" ]; then COVERAGE=0; fi
   - sudo cpanm -v --notest Test::Nginx
 
 script: make && make test
