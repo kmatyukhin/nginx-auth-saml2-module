@@ -53,6 +53,9 @@ test: $(TMP_DIR)/sbin/nginx
 	@if [ ! $(TEST) ] ; then TEST="*.t" ; fi
 	@PATH="$(TMP_DIR)/sbin":$(PATH) \
 	prove -r "t/$(TEST)"
+ifeq ($(COVERAGE),1)
+	@gcov --object-directory $(TMP_DIR)/objs/addon/nginx-auth-saml2-module *.c >/dev/null
+endif
 
 coverage:
 	lcov --directory $(TMP_DIR)/objs/addon/nginx-auth-saml2-module \
