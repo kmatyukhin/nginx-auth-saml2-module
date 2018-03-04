@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    entityID="ENTITY_ID">
+  <md:IDPSSODescriptor
+      WantAuthnRequestsSigned="false"
+      protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <X509Certificate>
+            __certificate__
+          </X509Certificate>
+        </X509Data>
+      </KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Data>
+          <X509Certificate>
+            __certificate__
+          </X509Certificate>
+        </X509Data>
+      </KeyInfo>
+      <md:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-1_5"/>
+    </md:KeyDescriptor>
+    <md:ArtifactResolutionService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+        Location="__location__" index="0" isDefault="true"/>
+    <md:ArtifactResolutionService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+        Location="__location__" index="1"/>
+    <md:SingleLogoutService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        Location="__location__"/>
+    <md:SingleLogoutService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+        Location="__location__"/>
+    <md:ManageNameIDService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        Location="__location__"/>
+    <md:ManageNameIDService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+        Location="__location__"/>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted</md:NameIDFormat>
+    <md:SingleSignOnService
+        Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+        Location="__location__"/>
+  </md:IDPSSODescriptor>
+  <md:Organization>
+    <md:OrganizationName xml:lang="en">organization_name</md:OrganizationName>
+    <md:OrganizationDisplayName xml:lang="en">organization_display_name</md:OrganizationDisplayName>
+    <md:OrganizationURL xml:lang="en"/>
+  </md:Organization>
+  <md:ContactPerson contactType="technical">
+    <md:Company>company</md:Company>
+    <md:GivenName/>
+    <md:SurName/>
+    <md:EmailAddress/>
+    <md:TelephoneNumber/>
+  </md:ContactPerson>
+</md:EntityDescriptor>

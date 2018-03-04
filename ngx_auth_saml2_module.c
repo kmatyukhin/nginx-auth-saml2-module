@@ -19,7 +19,7 @@ static char *ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static ngx_command_t ngx_auth_saml2_commands[] = {
 
     { ngx_string("auth_saml2_idp_metadata"),
-      NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_NOARGS,
+      NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
       ngx_auth_saml2, /* configuration setup function */
       0, /* No offset. Only one context is supported. */
       0, /* No offset when storing the module configuration on struct. */
