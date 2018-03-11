@@ -9,7 +9,11 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 #include <ngx_http.h>
+#include <lasso/lasso.h>
 
+
+static ngx_int_t ngx_auth_saml2_worker_init(ngx_cycle_t *cycle);
+static void ngx_auth_saml2_worker_exit(ngx_cycle_t *cycle);
 static char *ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 
 
@@ -43,18 +47,34 @@ static ngx_http_module_t ngx_auth_saml2_module_ctx = {
 
 ngx_module_t ngx_auth_saml2_module = {
     NGX_MODULE_V1,
-    &ngx_auth_saml2_module_ctx, /* module context */
-    ngx_auth_saml2_commands, /* module directives */
-    NGX_HTTP_MODULE, /* module type */
-    NULL, /* init master */
-    NULL, /* init module */
-    NULL, /* init process */
-    NULL, /* init thread */
-    NULL, /* exit thread */
-    NULL, /* exit process */
-    NULL, /* exit master */
+    &ngx_auth_saml2_module_ctx,      /* module context */
+    ngx_auth_saml2_commands,         /* module directives */
+    NGX_HTTP_MODULE,                 /* module type */
+    NULL,                            /* init master */
+    NULL,                            /* init module */
+    ngx_auth_saml2_worker_init,      /* init process */
+    NULL,                            /* init thread */
+    NULL,                            /* exit thread */
+    ngx_auth_saml2_worker_exit,      /* exit process */
+    NULL,                            /* exit master */
     NGX_MODULE_V1_PADDING
 };
+
+
+static ngx_int_t
+ngx_auth_saml2_worker_init(ngx_cycle_t *cycle)
+{
+    lasso_init();
+    return NGX_OK;
+}
+
+
+static void
+ngx_auth_saml2_worker_exit(ngx_cycle_t *cycle)
+{
+    lasso_shutdown();
+    return;
+}
 
 
 static char *

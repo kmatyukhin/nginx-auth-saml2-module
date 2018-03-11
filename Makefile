@@ -20,7 +20,8 @@ NGINX_OPTIONS += "--without-http_uwsgi_module"
 NGINX_OPTIONS += "--without-http_scgi_module"
 NGINX_OPTIONS += "--add-dynamic-module=$(MOD_DIR)"
 
-CFLAGS := "-Wall -Wextra -Werror"
+CFLAGS := $(shell pkg-config lasso --cflags)
+LDLIBS := $(shell pkg-config lasso --libs)
 
 .PHONY: all
 
@@ -36,10 +37,11 @@ nginx_download:
 
 configure:
 ifeq ($(COVERAGE),1)
-	cd $(TMP_DIR) && ./configure --with-cc-opt="-O0 --coverage" \
-        --with-ld-opt="-lgcov" $(NGINX_OPTIONS)
+	cd $(TMP_DIR) && ./configure --with-cc-opt="-O0 --coverage $(CFLAGS)" \
+        --with-ld-opt="$(LDLIBS) -lgcov" $(NGINX_OPTIONS)
 else
-	cd $(TMP_DIR) && ./configure --with-cc-opt="-O3" $(NGINX_OPTIONS)
+	cd $(TMP_DIR) && ./configure --with-cc-opt="-O3 $(CFLAGS)" \
+        --with-ld-opt="$(LDLIBS)" $(NGINX_OPTIONS)
 endif
 
 build:
