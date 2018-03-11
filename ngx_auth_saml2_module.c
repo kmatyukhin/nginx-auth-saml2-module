@@ -12,10 +12,7 @@
 
 static char *ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 
-/**
- * Module directives
- *
- */
+
 static ngx_command_t ngx_auth_saml2_commands[] = {
 
     { ngx_string("auth_saml2_idp_metadata"),
@@ -28,10 +25,7 @@ static ngx_command_t ngx_auth_saml2_commands[] = {
     ngx_null_command /* command termination */
 };
 
-/**
- * Module context
- *
- */
+
 static ngx_http_module_t ngx_auth_saml2_module_ctx = {
     NULL, /* preconfiguration */
     NULL, /* postconfiguration */
@@ -46,10 +40,7 @@ static ngx_http_module_t ngx_auth_saml2_module_ctx = {
     NULL  /* merge location configuration */
 };
 
-/**
- * Module definition
- *
- */
+
 ngx_module_t ngx_auth_saml2_module = {
     NGX_MODULE_V1,
     &ngx_auth_saml2_module_ctx, /* module context */
@@ -65,7 +56,9 @@ ngx_module_t ngx_auth_saml2_module = {
     NGX_MODULE_V1_PADDING
 };
 
-static char *ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+
+static char *
+ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     return NGX_CONF_OK;
 }
