@@ -20,7 +20,7 @@ NGINX_OPTIONS += "--without-http_uwsgi_module"
 NGINX_OPTIONS += "--without-http_scgi_module"
 NGINX_OPTIONS += "--add-dynamic-module=$(MOD_DIR)"
 
-CFLAGS := $(shell pkg-config lasso --cflags)
+CFLAGS := $(shell pkg-config lasso --cflags |tr '"' "'")
 LDLIBS := $(shell pkg-config lasso --libs)
 
 .PHONY: all
