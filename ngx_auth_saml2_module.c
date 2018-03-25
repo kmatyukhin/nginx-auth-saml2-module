@@ -28,7 +28,7 @@ static char *ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static ngx_command_t  ngx_auth_saml2_commands[] = {
 
     { ngx_string("auth_saml2_idp_metadata"),
-      NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
+      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_TAKE1,
       ngx_auth_saml2,
       NGX_HTTP_LOC_CONF_OFFSET,
       offsetof(ngx_auth_saml2_loc_conf_t, idp_metadata),
@@ -93,6 +93,11 @@ ngx_auth_saml2_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
         conf->idp_metadata = prev->idp_metadata;
     }
 
+    if (conf->idp_metadata.value.data != NULL) {
+        ngx_log_error(NGX_LOG_WARN, cf->log, 0,
+            "configured idp metadata %s", conf->idp_metadata.value.data);
+    }
+
     return NGX_CONF_OK;
 }
 
@@ -116,5 +121,28 @@ ngx_auth_saml2_worker_exit(ngx_cycle_t *cycle)
 static char *
 ngx_auth_saml2(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
+    ngx_auth_saml2_loc_conf_t *alcf = conf;
+
+    ngx_str_t                         *value;
+    ngx_http_compile_complex_value_t   ccv;
+
+    if (alcf->idp_metadata.value.data) {
+        return "is duplicate";
+    }
+
+    value = cf->args->elts;
+
+    ngx_memzero(&ccv, sizeof(ngx_http_compile_complex_value_t));
+
+    ccv.cf = cf;
+    ccv.value = &value[1];
+    ccv.complex_value = &alcf->idp_metadata;
+    ccv.zero = 1;
+    ccv.conf_prefix = 1;
+
+    if (ngx_http_compile_complex_value(&ccv) != NGX_OK) {
+        return NGX_CONF_ERROR;
+    }
+
     return NGX_CONF_OK;
 }
