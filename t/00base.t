@@ -14,6 +14,8 @@ load_module /tmp/nginx/modules/ngx_auth_saml2_module.so;
 GET /
 --- response_body_like chomp
 It works!
+
+
 === TEST 2: module directive
 --- main_config
 load_module /tmp/nginx/modules/ngx_auth_saml2_module.so;
@@ -24,6 +26,8 @@ GET /
 --- error_log eval
 my $idp_metadata = "\Q$ENV{TEST_NGINX_SERVROOT}/../metadata/idp_metadata.xml";
 qr/configured idp metadata $idp_metadata/
+
+
 === TEST 3: directive duplication
 --- main_config
 load_module /tmp/nginx/modules/ngx_auth_saml2_module.so;
